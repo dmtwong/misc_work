@@ -37,3 +37,23 @@ fix_dot <- function(vari){
 
 df[, 3:24] <- lapply(df[, 3:24], fix_dot)
 typeof(df);class(df);summary(df)
+
+# Testing on adding statistical summary using variable 'InfMort' before generalizing 
+ix <- !is.na(df['InfMort'])
+
+InfMort_tab <- ddply(df[ix, 1:3], "CountryName", summarise,
+                     begin = min(Year),
+                     end   = max(Year),
+                     duration = end-begin+1,
+                     check_big = max(InfMort)
+)
+
+summary_InfMort <- summarise(InfMort_tab,
+                             eariest = min(begin), 
+                             latest = max(end),
+                             tot_obs = sum(duration)
+)
+
+# QA Checking
+InfMort_tab[c(1:5,100,184),]
+summary_InfMort
