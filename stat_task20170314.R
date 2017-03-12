@@ -57,3 +57,22 @@ summary_InfMort <- summarise(InfMort_tab,
 # QA Checking
 InfMort_tab[c(1:5,100,184),]
 summary_InfMort
+
+subset_data <- lapply(var1[3:24], function(x){
+  df[!is.na(df[x]), c('CountryName','Year',x)]
+})
+#subset_data[[1]][1:5,];subset_data[[2]][1:5,];subset_data[[22]][1:5,]
+
+All_tab <- lapply(subset_data, ddply, "CountryName", summarise,
+                  begin = min(Year),
+                  end   = max(Year),
+                  duration = end-begin+1
+)
+
+#all(InfMort_tab[,1:4] == All_tab[[1]])
+summary_all <- lapply(All_tab, summarise, eariest = min(begin), 
+                      latest = max(end),
+                      tot_obs = sum(duration)
+)
+
+#all(summary_InfMort[] == summary_all[[1]])
