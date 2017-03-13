@@ -57,6 +57,3 @@ summary_all <- lapply(All_tab, summarise, eariest = min(begin),
                                           latest = max(end),
                                           tot_obs = sum(duration)
 )
-
-
-
